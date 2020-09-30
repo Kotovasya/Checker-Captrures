@@ -1,7 +1,7 @@
 script_name('Checker Captures')
 script_description('Скрипт показывает активные захваты на серверах GalaxY RPG')
 script_author('Kotovasya')
-script_version(4.2)
+script_version(4.5)
 script_dependencies('ImGui', 'Font Awesome 5')
 
 require "lib.moonloader"
@@ -59,7 +59,10 @@ local updateText = [[
 	{FF7F00}8. {FFFFFF}Настройки скрипта переделаны в {00FF7F}ImGUI {FFFFFF}окошко. Пользуюсь этой херней первый раз не судите строго.
 
 	{FF0000}P.S. {FFFFFF}возможны незначительные баги при одновременной игре с нескольких окон 
-	(например логгирование захватов сразу с двух). Осталось помолиться что пофикшу. 
+	(например логгирование захватов сразу с двух). Осталось помолиться что пофикшу.
+
+	{FF0000}P.S.S. Извиняюсь за такой дикий косяк от меня в субботу, постарался все краши/ошибки исправить.
+	Если у кого-то все же по какой-то причине скрипт крашится - {FF0000}пишите(!) {FFFFFF}в {8A2BE2}Discord {FFFFFF}Kotovasya#3365
 ]]
 
 local months = {
@@ -337,9 +340,9 @@ local timerDelay = {
 
 if imguiIsLoaded then
 	windowSizes = {
-		[1] = imgui.ImVec2(895, 390),
-		[2] = imgui.ImVec2(895, 250),
-		[3] = imgui.ImVec2(895, 600),
+		[1] = imgui.ImVec2(895, 540),
+		[2] = imgui.ImVec2(895, 320),
+		[3] = imgui.ImVec2(895, 680),
 		[4] = imgui.ImVec2(895, 450),
 		[5] = imgui.ImVec2(895, 480)
 	}
@@ -444,7 +447,7 @@ function capturesRender()
 				table.insert(captures, 25, {name = string.format("{FFFFFF}%s [18]", captions[getServer()][18]), attack = "{6495ED}Street Racers", defender = "{4C436E}Black Kings", time = os.time() - 120, lastDelay = os.time()})
 				table.insert(captures, 26, {name = string.format("{FFFFFF}%s [46]", captions[getServer()][46]), attack = "{FFD720}Los Santos Vagos", defender = "{8A2CD7}The Ballas Gang", time = os.time() - 520, lastDelay = os.time()})
 				table.insert(captures, 27, {name = string.format("{FFFFFF}%s [15]", captions[getServer()][15]), attack = "{FA24CC}The Triads Mafia", defender = "{70524D}Hell Angels", time = os.time() - 333, lastDelay = os.time()})
-				table.insert(captures, 28, {name = string.format("{FFFFFF}%s [28]", captions[getServer()][15]), attack = "{20D4AD}San Fierro Rifa", defender = "{778899}Русская Мафия", time = os.time() - 333, lastDelay = os.time()})
+				table.insert(captures, 28, {name = string.format("{FFFFFF}%s [28]", captions[getServer()][28]), attack = "{20D4AD}San Fierro Rifa", defender = "{778899}Русская Мафия", time = os.time() - 333, lastDelay = os.time()})
 				lua_thread.create(function()
 					while settings_window_state.v or isRemoveChecker do
 						wait(0)
@@ -464,7 +467,6 @@ function capturesRender()
 					captures[27] = nil
 					captures[28] = nil
 					winState = 1
-					inicfg.save(Settings, SETTINGS_FILE)
 				end)
 			end
 		end
@@ -609,6 +611,10 @@ function formatImguiVarriables()
 		font_bold = imgui.ImBool(false)
 	end
 
+	settings_captures_ls = imgui.ImBool(Settings.Captures.LS)
+	settings_captures_lv = imgui.ImBool(Settings.Captures.LV)
+	settings_captures_sf = imgui.ImBool(Settings.Captures.SF)
+	settings_captures_country = imgui.ImBool(Settings.Captures.Country)
 	settings_captures_visible = imgui.ImBool(Settings.Captures.Visible)
 	settings_captures_fontName = u8(Settings.Captures.FontName)
 	settings_captures_fontSize = imgui.ImInt(Settings.Captures.FontSize)
@@ -819,7 +825,7 @@ function imgui.OnDrawFrame()
 				if imgui.Combo(fa.ICON_ALIGN_LEFT .. u8(" Выравнивание"), settings_captures_alignment, table.u8(renderAlignments)) then Settings.Captures.Alignment = settings_captures_alignment.v end
 				if imgui.Combo(fa.ICON_SORT_AMOUNT_DOWN_ALT .. u8(" Порядок отображения"), settings_captures_order, table.u8(orders)) then Settings.Captures.Order = settings_captures_order.v end
 				if imgui.Combo(fa.ICON_CLOCK .. u8(" Стиль отображения таймера"), settings_captures_timerStyle, table.u8(timerStyles)) then Settings.Captures.TimerStyle = settings_captures_timerStyle.v end
-				if imgui.Button(fa.ICON_RETWEET .. u8(" Выбрать позицию"), imgui.ImVec2(160, 20)) then
+				if imgui.Button(fa.ICON_RETWEET .. u8(" Выбрать позицию"), imgui.ImVec2(160, 30)) then
 					lua_thread.create(function()
 						isRemoveChecker = true
 						settings_window_state.v = false
@@ -915,14 +921,27 @@ function imgui.OnDrawFrame()
 
 			imgui.SetCursorPosX(400)
 			imgui.Text(fa.ICON_INFO .. u8('  Дополнительно'))
-			imgui.BeginChild(4, imgui.ImVec2(875, 35), true)
+			imgui.BeginChild(4, imgui.ImVec2(875, 100), true)
+				imgui.SetCursorPosX(340)
+				imgui.Text(fa.ICON_CITY .. u8("  Отображение захватов в городах"))
+				imgui.SetCursorPosX(280)
+				if imgui.Checkbox(u8("Los Santos"), settings_captures_ls) then Settings.Captures.LS = settings_captures_ls.v end
+				imgui.SameLine()
+				if imgui.Checkbox(u8("Las Venturas"), settings_captures_lv) then Settings.Captures.LV = settings_captures_lv.v end
+				imgui.SameLine()
+				if imgui.Checkbox(u8("San Fierro"), settings_captures_sf) then Settings.Captures.SF = settings_captures_sf.v end
+				imgui.SameLine()
+				if imgui.Checkbox(u8("Деревни"), settings_captures_country) then Settings.Captures.Country = settings_captures_country.v end
+				imgui.NewLine()
+				imgui.SetCursorPosX(200)
 				if imgui.Checkbox(u8("Показывать уведомления в чат"), settings_captures_message) then Settings.Captures.Message = settings_captures_message.v end
 				imgui.SameLine()
-				imgui.SetCursorPosX(250)
+				imgui.SetCursorPosX(450)
 				if imgui.Checkbox(u8("Вести логи захватов"), settings_captures_log) then Settings.Captures.Log = settings_captures_log.v end
 				imgui.SameLine()
-				imgui.SetCursorPosX(430)
-				if imgui.CustomButton(fa.ICON_INFO .. u8("  Что изменилось?"), buttonStyle.inactive, buttonStyle.hovered, buttonStyle.pushed, imgui.ImVec2(170, 20)) then
+				imgui.SetCursorPosX(670)
+				imgui.SetCursorPosY(60)
+				if imgui.CustomButton(fa.ICON_INFO .. u8("  Что изменилось?"), buttonStyle.inactive, buttonStyle.hovered, buttonStyle.pushed, imgui.ImVec2(170, 30)) then
 					winState = 5
 				end
 			imgui.EndChild()
@@ -1068,7 +1087,18 @@ function imgui.OnDrawFrame()
 			imgui.SetCursorPosX(20)
 			if imgui.CustomButton(fa.ICON_ARROW_LEFT .. u8("  Ок, я гном"), buttonStyle.inactive, buttonStyle.hovered, buttonStyle.pushed, imgui.ImVec2(120, 40)) then
 				winState = 1
-				sampAddChatMessage(">> ПМ от [RoX].Kotovasya.(0): соболезную", 0xFFFF22)
+				sampAddChatMessage(">> ПМ от [RoX].Kotovasya.(1000): соболезную, гном", 0xFFFF22)
+			end
+		end
+		if winState ~= 5 and winState ~= 4 then
+			imgui.NewLine()
+			imgui.SetCursorPosX(350)
+			if imgui.CustomButton(fa.ICON_SAVE .. u8("  Сохранить настройки"), imgui.ImVec4(0.00, 0.59, 0.10, 1.00), imgui.ImVec4(0.00, 0.72, 0.20, 1.00), imgui.ImVec4(0.00, 0.87, 0.42, 1.00), imgui.ImVec2(200, 50)) then
+				if inicfg.save(Settings, SETTINGS_FILE) then
+					sampAddChatMessage("{FF7F00}[Checker Captures]:{ffffff} Настройки успешно сохранены", 0xFF7F00)
+				else
+					sampAddChatMessage("{FF7F00}[Checker Captures]:{ffffff} Не удалось сохранить настройки((", 0xFF7F00)
+				end
 			end
 		end
 		imgui.End()
@@ -1178,7 +1208,7 @@ function loadSettings()
 			X = sw - 10,
 			Y = sh - 40,
 			TimerStyle = 3,
-			Order = 1,
+			Order = 0,
 			RollbackTime = true,
 			ShowPlayers = true,
 			Message = true,
@@ -1221,7 +1251,7 @@ end
 function events.onGangZoneStopFlash(id)
 	if captures[id] ~= nil then
 		lua_thread.create(function()
-			wait(5)
+			wait(10)
 			if captures[id] ~= nil then
 				local gz_pool = ffi.cast('struct stGangzonePool*', sampGetGangzonePoolPtr())
 				local str = string.format("{FF7F00}%s [%d] {FFFFFF}- захват завершен. ", captions[getServer()][gangzones[id]], gangzones[id])
@@ -1230,13 +1260,15 @@ function events.onGangZoneStopFlash(id)
 				else
 					str = str .. string.format("%s {FFFFFF}захватили территорию. ", captures[id].attack)
 				end
-				if Settings.Captures.Message and Settings.Captures[towns[id]] then	
-					sampAddChatMessage(str, 0xFF7F00)
-				end
-				if Settings.Captures.Log then
-					local date = os.date("!*t", os.time() - captures[id].time)
-					local dateNow = os.getTime(3)
-					saveLog(string.format("[%d:%d:%d] ", addZero(dateNow.hour), addZero(dateNow.min), addZero(dateNow.sec)) .. str .. string.format("Захват длился %d:%d\n", addZero(date.min), addZero(date.sec)))
+				if os.time() - captures[id].time < 660 then 
+					if Settings.Captures.Message and Settings.Captures[towns[id]] then	
+						sampAddChatMessage(str, 0xFF7F00)
+					end
+					if Settings.Captures.Log then
+						local date = os.date("!*t", os.time() - captures[id].time)
+						local dateNow = os.getTime(3)
+						saveLog(string.format("[%d:%d:%d] ", addZero(dateNow.hour), addZero(dateNow.min), addZero(dateNow.sec)) .. str .. string.format("Захват длился %d:%d\n", addZero(date.min), addZero(date.sec)))
+					end
 				end
 				captures[id] = nil
 			end
