@@ -1479,7 +1479,7 @@ function update()
 		os.remove(getWorkingDirectory() .. "/config/Checker Captures/Version.ini")
 		if ini.Script.Version > tonumber(thisScript().version) then
 			sampAddChatMessage(string.format("{FF7F00}[Checker Captures]:{ffffff} Обнаружена новая версия скрипта, пробуем обновиться..."), 0xFF7F00)
-			local script = downloadFile("https://raw.githubusercontent.com/Kotovasya/Checker-Captrures/master/Checker%20Captures.lua", "CheckerCaptures.lua")
+			local script = downloadFile("https://raw.githubusercontent.com/Kotovasya/Checker-Captrures/master/CheckerCaptures.lua", "CheckerCaptures.lua")
 			if script then
 				return true
 			else
