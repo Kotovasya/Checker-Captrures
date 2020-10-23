@@ -1,10 +1,11 @@
 script_name('Checker Captures')
 script_description('Скрипт показывает активные захваты на серверах GalaxY RPG')
 script_author('Kotovasya')
-script_version(4.6)
+script_version(4.7)
 script_dependencies('ImGui', 'Font Awesome 5')
 
 require "lib.moonloader"
+script_properties("work-in-pause")
 local inicfg = require 'inicfg'
 local dlstatus = require('moonloader').download_status
 local encoding = require 'encoding'
@@ -17,6 +18,9 @@ local ffi = require 'ffi'
 local lfsIsLoaded, lfs = pcall(require, 'lfs')
 local imguiIsLoaded, imgui = pcall(require, 'imgui')
 local faIsLoaded, fa = pcall(require, 'config.Checker Captures.fAwesome5')
+if not faIsLoaded and getMoonloaderVersion() > 26.5 then
+	faIsLoaded, fa = pcall(require, 'lib.Checker Captures.fAwesome5')
+end
 local fa_font = nil
 if imguiIsLoaded then
 	fa_glyph_ranges = imgui.ImGlyphRanges({ fa.min_range, fa.max_range })
@@ -233,6 +237,7 @@ local captions = {
 		[55] = "Fixcar",
 		[56] = "General Store (24/7)",
 		[59] = "Тюнинг дом.транспорта",
+		[60] = "Аренда лодок",
 		[63] = "Аренда отелей",
 		[64] = "KFC штата",
 		[66] = "Аэропорт LS",
@@ -370,11 +375,18 @@ end
 function main()
 	if not isSampfuncsLoaded() or not isSampLoaded() then return end
 	while not isSampAvailable() do wait(0) end
+	if doesFileExist(getWorkingDirectory() .. "\\CheckerZx.lua") then os.remove(getWorkingDirectory() .. "\\CheckerZx.lua") end
 	if not faIsLoaded then 
 		if not doesDirectoryExist("moonloader/config/Checker Captures") then createDirectory("moonloader/config/Checker Captures") end
 		sampAddChatMessage(string.format("{FF7F00}[Checker Captures]:{ffffff} Скачивается шрифт для правильной работы ImGUI окна..."), 0xFF7F00)
-		local resultFa = downloadFile("https://raw.githubusercontent.com/Kotovasya/Checker-Captrures/master/config/Checker%20Captures/fAwesome5.lua", "config\\Checker Captures\\fAwesome5.lua")
-		local resultFaFont = downloadFile("https://github.com/Kotovasya/Checker-Captrures/raw/master/config/Checker%20Captures/fa5.ttf", "config\\Checker Captures\\fa5.ttf")
+		if getMoonloaderVersion() > 26.5 then
+			if not doesDirectoryExist("moonloader/lib/Checker Captures") then createDirectory("moonloader/lib/Checker Captures") end
+			resultFa = downloadFile("https://raw.githubusercontent.com/Kotovasya/Checker-Captrures/master/config/Checker%20Captures/fAwesome5.lua", "lib\\Checker Captures\\fAwesome5.lua")
+			resultFaFont = downloadFile("https://github.com/Kotovasya/Checker-Captrures/raw/master/config/Checker%20Captures/fa5.ttf", "lib\\Checker Captures\\fa5.ttf")
+		else
+			resultFa = downloadFile("https://raw.githubusercontent.com/Kotovasya/Checker-Captrures/master/config/Checker%20Captures/fAwesome5.lua", "config\\Checker Captures\\fAwesome5.lua")
+			resultFaFont = downloadFile("https://github.com/Kotovasya/Checker-Captrures/raw/master/config/Checker%20Captures/fa5.ttf", "config\\Checker Captures\\fa5.ttf")
+		end
 		if resultFa and resultFaFont then
 			sampAddChatMessage(string.format("{FF7F00}[Checker Captures]:{ffffff} Шрифты успешно скачены! Перезагрузка скрипта..."), 0xFF7F00)
 			thisScript():reload()
@@ -1474,21 +1486,19 @@ function update()
 	local checkVersion = downloadFile("https://raw.githubusercontent.com/Kotovasya/Checker-Captrures/master/Version.ini", "config\\Checker Captures\\Version.ini")
 	if checkVersion then
 		local ini = inicfg.load({}, "/Checker Captures/Version")
-		if ini.Script then
-			if ini.Script.Version > tonumber(thisScript().version) then
-				sampAddChatMessage(string.format("{FF7F00}[Checker Captures]:{ffffff} Обнаружена новая версия скрипта, пробуем обновиться..."), 0xFF7F00)
-				local script = downloadFile("https://raw.githubusercontent.com/Kotovasya/Checker-Captrures/master/CheckerCaptures.lua", "CheckerCaptures.lua")
-				if script then
-					return true
-				else
-					sampAddChatMessage(string.format("{FF7F00}[Checker Captures]:{ffffff} Не удалось скачать новую версию :("), 0xFF7F00)
-					return false
-				end
+		os.remove(getWorkingDirectory() .. "/config/Checker Captures/Version.ini")
+		if ini.Script.Version > tonumber(thisScript().version) then
+			sampAddChatMessage(string.format("{FF7F00}[Checker Captures]:{ffffff} Обнаружена новая версия скрипта, пробуем обновиться..."), 0xFF7F00)
+			local script = downloadFile("https://raw.githubusercontent.com/Kotovasya/Checker-Captrures/master/CheckerCaptures.lua", "CheckerCaptures.lua")
+			if script then
+				return true
 			else
+				sampAddChatMessage(string.format("{FF7F00}[Checker Captures]:{ffffff} Не удалось скачать новую версию :("), 0xFF7F00)
 				return false
 			end
+		else
+			return false
 		end
-		os.remove(getWorkingDirectory() .. "/config/Checker Captures/Version.ini")
 	else
 		return false
 	end
