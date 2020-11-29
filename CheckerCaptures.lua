@@ -1,7 +1,7 @@
 script_name('Checker Captures')
 script_description('Скрипт показывает активные захваты на серверах GalaxY RPG')
 script_author('Kotovasya')
-script_version(4.9)
+script_version(5.0)
 script_dependencies('ImGui', 'Font Awesome 5')
 
 require "lib.moonloader"
@@ -239,6 +239,7 @@ local captions = {
         [14] = "Аммо Grove",
         [15] = "Аммо Байкеров",
         [16] = "Аммо Карьера",
+        [19] = "Аммо TTM",
         [18] = "Аммо Street Racers",
         [20] = "Аммо Починки LS",
         [21] = "Аммо ДБ1",
@@ -256,6 +257,7 @@ local captions = {
         [35] = "Казино LS",
         [40] = "Бар Ballas",
         [43] = "Бар Delimor",
+        [44] = "Бар Santa Maria",
         [45] = "Бар Банка LS",
         [46] = "Аммо Vagos",
         [48] = "Новая Аренда Каров LS",
