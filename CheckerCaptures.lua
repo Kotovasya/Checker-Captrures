@@ -1,7 +1,7 @@
 script_name('Checker Captures')
 script_description('Скрипт показывает активные захваты на серверах GalaxY RPG')
 script_author('Kotovasya')
-script_version(5.0)
+script_version(5.1)
 script_dependencies('ImGui', 'Font Awesome 5')
 
 require "lib.moonloader"
@@ -46,7 +46,7 @@ local updateText = [[
 	или в {8A2BE2}Discord {FFFFFF}Kotovasya#3365 (преимущественно {8A2BE2}Discord{FFFFFF}, там отвечу быстрее). Заранее {7FFF00}благодарствую{FFFFFF}.
 
 	Список новоизменений:
-	{FFFFFF}Обновил терры для гу3 на 30.11.2020
+	{FFFFFF}Обновил терры для GY II/III на 08.12.2020
 
 	P.S. Если у кого-то все же по какой-то причине скрипт крашится - {FF0000}пишите(!) {FFFFFF}в {8A2BE2}Discord {FFFFFF}Kotovasya#3365
 ]]
@@ -187,14 +187,12 @@ local captions = {
 		[14] = "Аммо Grove",
 		[15] = "Аммо 4 драконов",
 		[16] = "Аммо Карьера",
-		[17] = "Аммо деревни РМ",
 		[18] = "Аммо Street Racers",
 		[19] = "Аммо ТТМ",
 		[20] = "Аммо КХ",
 		[21] = "Аммо ДБ",
 		[23] = "Аммо Репортеров",
 		[24] = "Ц.Бинко LV",
-		[25] = "Новое Бинко LS",
 		[26] = "Бинко Ballas",
 		[27] = "Аммо Закупки",
 		[30] = "Аммо Los Aztecas",
@@ -203,11 +201,9 @@ local captions = {
 		[33] = "Казино 4 дракона",
 		[34] = "Казино Калигула",
 		[35] = "Старое казино",
-		[37] = "Бар Street Racers",
 		[39] = "Бар Кактус",
 		[40] = "Бар 69",
 		[41] = "Ц. Бинко LS",
-		[42] = "Новое бинко LV",
 		[43] = "Бар Dilimore",
 		[44] = "Бар Santa Maria",
 		[46] = "Аммо Vagos",
@@ -225,7 +221,6 @@ local captions = {
 		[66] = "Аэропорт LS",
 		[67] = "Аэропорт LV",
 		[68] = "Банк San Andreas",
-		[73] = "Бинко Vagos",
 	},
 	[3] = {
         [0] = "Ц. Аммо LS",
@@ -246,6 +241,7 @@ local captions = {
         [23] = "Аммо Репортёров",
         [24] = "Новое Бинко LV",
         [25] = "Ц.Бинко SF",
+        [26] = "Бинко Ballas",
         [27] = "Аммо Закупки",
         [28] = "Аммо Русской Мафии",
         [29] = "Аммо LCN",
@@ -276,7 +272,7 @@ local captions = {
         [66] = "Аэропорт LS",
         [67] = "Аэропорт LV",
         [68] = "Банк San Andreas"
-	}
+    }
 }
 
 local renderAlignments = {
