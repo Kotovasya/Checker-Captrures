@@ -1,7 +1,7 @@
 script_name('Checker Captures')
 script_description('Скрипт показывает активные захваты на серверах GalaxY RPG')
 script_author('Kotovasya')
-script_version(5.1)
+script_version(5.2)
 script_dependencies('ImGui', 'Font Awesome 5')
 
 require "lib.moonloader"
@@ -46,7 +46,7 @@ local updateText = [[
 	или в {8A2BE2}Discord {FFFFFF}Kotovasya#3365 (преимущественно {8A2BE2}Discord{FFFFFF}, там отвечу быстрее). Заранее {7FFF00}благодарствую{FFFFFF}.
 
 	Список новоизменений:
-	{FFFFFF}Обновил терры для GY II/III на 08.12.2020
+	{FFFFFF}Обновил терры для GY II на 15.12.2020
 
 	P.S. Если у кого-то все же по какой-то причине скрипт крашится - {FF0000}пишите(!) {FFFFFF}в {8A2BE2}Discord {FFFFFF}Kotovasya#3365
 ]]
@@ -191,7 +191,6 @@ local captions = {
 		[19] = "Аммо ТТМ",
 		[20] = "Аммо КХ",
 		[21] = "Аммо ДБ",
-		[23] = "Аммо Репортеров",
 		[24] = "Ц.Бинко LV",
 		[26] = "Бинко Ballas",
 		[27] = "Аммо Закупки",
