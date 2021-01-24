@@ -1,7 +1,7 @@
 script_name('Checker Captures')
 script_description('Скрипт показывает активные захваты на серверах GalaxY RPG')
 script_author('Kotovasya')
-script_version(5.2)
+script_version(5.3)
 script_dependencies('ImGui', 'Font Awesome 5')
 
 require "lib.moonloader"
@@ -227,6 +227,7 @@ local captions = {
         [3] = "Бар байкеров",
         [5] = "Аммо каллигулы",
         [6] = "Бар Pig Pen",
+        [7] = "Бар Ballas",
         [8] = "Бар Grove",
         [9] = "Бар Alhambra",
         [11] = "Бар LCN",
@@ -257,7 +258,7 @@ local captions = {
         [46] = "Аммо Vagos",
         [48] = "Новая Аренда Каров LS",
         [49] = "Телефоная Компания",
-        [50] = "Нефтибаза",
+        [50] = "Нефтебаза",
         [51] = "Электростанция",
         [52] = "Car Delivery",
         [53] = "House Upgrade",
