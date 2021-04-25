@@ -1,7 +1,7 @@
 script_name('Checker Captures')
 script_description('Скрипт показывает активные захваты на серверах GalaxY RPG')
 script_author('Kotovasya')
-script_version(5.6)
+script_version(5.7)
 script_dependencies('ImGui', 'Font Awesome 5')
 
 require "lib.moonloader"
@@ -46,7 +46,7 @@ local updateText = [[
 	или в {8A2BE2}Discord {FFFFFF}Kotovasya#3365 (преимущественно {8A2BE2}Discord{FFFFFF}, там отвечу быстрее). Заранее {7FFF00}благодарствую{FFFFFF}.
 
 	Список новоизменений:
-	{FFFFFF}Обновил терры для GY II на 13.04.2021
+	{FFFFFF}Обновил терры для GY III на 25.04.2021
 
 	P.S. Если у кого-то все же по какой-то причине скрипт крашится - {FF0000}пишите(!) {FFFFFF}в {8A2BE2}Discord {FFFFFF}Kotovasya#3365
 ]]
@@ -237,9 +237,10 @@ local captions = {
         [18] = "Аммо Street Racers",
         [20] = "Аммо Починки LS",
         [21] = "Аммо ДБ1",
+        [22] = "Бар РМ",
         [23] = "Аммо Репортёров",
         [24] = "Новое Бинко LV",
-        [25] = "Ц.Бинко SF",
+        [25] = "Бинко Grove",
         [26] = "Бинко Ballas",
         [27] = "Аммо Закупки",
         [28] = "Аммо Русской Мафии",
@@ -250,7 +251,8 @@ local captions = {
         [33] = "Казино LV",
         [34] = "Казино Каллигула",
         [35] = "Казино LS",
-        [40] = "Бар Ballas",
+        [40] = "Бар 69",
+        [41] = "Ц. Бинко LS",
         [43] = "Бар Delimor",
         [44] = "Бар Santa Maria",
         [45] = "Бар Банка LS",
