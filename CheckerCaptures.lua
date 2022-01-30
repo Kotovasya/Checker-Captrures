@@ -1,7 +1,7 @@
 script_name('Checker Captures')
 script_description('Скрипт показывает активные захваты на серверах GalaxY RPG')
 script_author('Kotovasya')
-script_version(5.7)
+script_version(5.8)
 script_dependencies('ImGui', 'Font Awesome 5')
 
 require "lib.moonloader"
@@ -46,7 +46,8 @@ local updateText = [[
 	или в {8A2BE2}Discord {FFFFFF}Kotovasya#3365 (преимущественно {8A2BE2}Discord{FFFFFF}, там отвечу быстрее). Заранее {7FFF00}благодарствую{FFFFFF}.
 
 	Список новоизменений:
-	{FFFFFF}Обновил терры для GY III на 25.04.2021
+	{FFFFFF}Обновил терры для GY I на 30.01.2022
+	Актуальная версия скрипта 5.8
 
 	P.S. Если у кого-то все же по какой-то причине скрипт крашится - {FF0000}пишите(!) {FFFFFF}в {8A2BE2}Discord {FFFFFF}Kotovasya#3365
 ]]
@@ -113,11 +114,10 @@ local eventColors = {
 
 local captions = {
 	[1] = {
-		[0] = "Ц. Аммо LS",
 		[1] = "Ц. Аммо SF",
 		[2] = "Ресторан SF",
-		[3] = "Бар ст. респы байкеров",
-		[4] = "Бар Emerald",
+		[3] = "Бар 4 дракона",
+		[4] = "Бар Курочка",
 		[5] = "Бар Jizzy",
 		[6] = "Бар Pig Pen",
 		[7] = "Бар Deliver",
@@ -137,7 +137,7 @@ local captions = {
 		[21] = "Аммо ДБ",
 		[22] = "Бар Баскет",
 		[23] = "Аммо Black Kings",
-		[24] = "Ц.Бинко LV",
+		[24] = "Бинко LVPD",
 		[25] = "Ц.Бинко SF",
 		[26] = "Ц.Бинко LS",
 		[27] = "Аммо Закупки",
@@ -148,6 +148,7 @@ local captions = {
 		[32] = "Аммо LCN",
 		[33] = "Казино 4 дракона",
 		[34] = "Казино Калигула",
+		[35] = "Старое казино LV",
 		[37] = "Бар Street Racers",
 		[39] = "Бар Кактус",
 		[40] = "Бар Вагос",
@@ -157,16 +158,21 @@ local captions = {
 		[44] = "Бар Santa Maria",
 		[45] = "Бинко Рифы",
 		[46] = "Аммо Vagos",
+		[47] = "Аренда авто LS",
 		[48] = "Аренда авто SF",
 		[49] = "Телефонная компания",
-		[50] = "Нефтебаза",
+		[50] = "Нефтяной танкер",
 		[51] = "Электростанция",
 		[52] = "Car Delivery",
 		[53] = "House Upgrade",
 		[54] = "Студия CNN",
 		[55] = "Fixcar",
 		[56] = "General Store (24/7)",
+		[57] = "Paintball",
 		[59] = "Тюнинг дом.транспорта",
+		[60] = "Аренда лодок",
+		[61] = "Аренда мото SF",
+		[63] = "Аренда отелей штата",
 		[64] = "KFC штата",
 		[65] = "Аэропорт SF",
 		[66] = "Аэропорт LS",
@@ -1307,8 +1313,8 @@ end
 
 function Count()
 	local count = {}
-	for _, value in pairs(gangzoneColors) do count[value] = 0 end
-	for i = 12, 72, 1 do
+	for _, value in pairs(gangzoneColors) do count[value] = -1 end
+	for i = 0, 1023 do
 		local gz_pool = ffi.cast('struct stGangzonePool*', sampGetGangzonePoolPtr())
 		if gz_pool.pGangzone[i] ~= nil then
 			count[gangzoneColors[gz_pool.pGangzone[i].dwColor]] = count[gangzoneColors[gz_pool.pGangzone[i].dwColor]] + 1
