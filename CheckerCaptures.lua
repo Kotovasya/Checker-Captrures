@@ -1,7 +1,7 @@
 script_name('Checker Captures')
 script_description('Скрипт показывает активные захваты на серверах GalaxY RPG')
 script_author('Kotovasya')
-script_version(5.9)
+script_version(6.0)
 script_dependencies('ImGui', 'Font Awesome 5')
 
 require "lib.moonloader"
@@ -43,11 +43,8 @@ struct stGangzonePool
 
 local updateText = [[
 	Список новоизменений:
-	Обновил терры для GY I на 10.07.2022, спасибо за помощь Single
-	Теперь меню закрывается на ESC
-	Больше не должен крашить при проверке обновы
-	Теперь скрипт отгружается не на сервере GY
-	Актуальная версия скрипта 5.9
+	Обновил терры для GY I на 14.11.2022, спасибо за помощь VEXON
+	Актуальная версия скрипта 6.0
 
 	P.S. Если у кого-то все же по какой-то причине скрипт крашится - {FF0000}пишите(!) {FFFFFF}в {8A2BE2}Discord {FFFFFF}Kotovasya#3365
 ]]
@@ -152,12 +149,12 @@ local captions = {
 		[37] = "Бар Street Racers",
 		[39] = "Бар Кактус",
 		[40] = "Бар Вагос",
-		[42] = "Новое бинко LS",
+		[41] = "Бинко LCN",
+		[42] = "Новое бинко LV",
 		[43] = "Бар Dilimore",
 		[44] = "Бар Santa Maria",
 		[45] = "Бинко Рифы",
 		[46] = "Аммо Vagos",
-		[47] = "Аренда авто LS",
 		[48] = "Аренда авто SF",
 		[49] = "Телефонная компания",
 		[50] = "Нефтяной танкер",
@@ -167,10 +164,10 @@ local captions = {
 		[54] = "Студия CNN",
 		[55] = "Fixcar",
 		[56] = "General Store (24/7)",
-		[57] = "Paintball",
 		[59] = "Тюнинг дом.транспорта",
 		[60] = "Аренда лодок",
 		[61] = "Аренда мото SF",
+		[62] = "Аренда авто LV",
 		[63] = "Аренда отелей штата",
 		[64] = "KFC штата",
 		[65] = "Аэропорт SF",
@@ -873,7 +870,7 @@ if imguiIsLoaded then
 				if imgui.Checkbox(u8("Показывать количество игроков в территории"),
 					settings_captures_showPlayers) then Settings.Captures.ShowPlayers = settings_captures_showPlayers.v end
 				if imgui.Checkbox(u8("Показывать время до отката на час"), settings_captures_rollbackTime) then Settings
-						.Captures.RollbackTime = settings_captures_rollbackTime.v
+							.Captures.RollbackTime = settings_captures_rollbackTime.v
 				end
 				imgui.PushItemWidth(200)
 				if imgui.Combo(fa.ICON_ALIGN_LEFT .. u8(" Выравнивание"), settings_captures_alignment,
@@ -994,17 +991,17 @@ if imguiIsLoaded then
 				if imgui.Checkbox(u8("San Fierro"), settings_captures_sf) then Settings.Captures.SF = settings_captures_sf.v end
 				imgui.SameLine()
 				if imgui.Checkbox(u8("Деревни"), settings_captures_country) then Settings.Captures.Country = settings_captures_country
-						.v
+							.v
 				end
 				imgui.NewLine()
 				imgui.SetCursorPosX(200)
 				if imgui.Checkbox(u8("Показывать уведомления в чат"), settings_captures_message) then Settings
-						.Captures.Message = settings_captures_message.v
+							.Captures.Message = settings_captures_message.v
 				end
 				imgui.SameLine()
 				imgui.SetCursorPosX(450)
 				if imgui.Checkbox(u8("Вести логи захватов"), settings_captures_log) then Settings.Captures.Log = settings_captures_log
-						.v
+							.v
 				end
 				imgui.SameLine()
 				imgui.SetCursorPosX(670)
@@ -1205,7 +1202,7 @@ end
 function saveConfig()
 	Settings.Captures.Visible = settings_captures_visible.v
 	Settings.Captures.FontName = settings_captures_fontName.v ~= nil and u8:decode(settings_captures_fontName.v) or
-		Settings.Captures.FontName
+			Settings.Captures.FontName
 	Settings.Captures.FontSize = settings_captures_fontSize.v
 	Settings.Captures.FontFlags = 0
 	if not font_none.v then
@@ -1502,7 +1499,7 @@ function getMaxPlayersFraction(exception, id)
 			local fractionCount = 0
 			for _, ped in pairs(getAllChars()) do
 				if isCharInArea2d(ped, gzPosition[0], gzPosition[1], gzPosition[2], gzPosition[3], false) and
-					table.contains(tableSkin, getCharModel(ped)) then
+						table.contains(tableSkin, getCharModel(ped)) then
 					fractionCount = fractionCount + 1
 				end
 			end
@@ -1563,11 +1560,11 @@ end
 function saveLog(line)
 	local date = os.getTime(3)
 	local directory = getWorkingDirectory() ..
-		"\\config\\Checker Captures\\Logs\\Galaxy " ..
-		getServer() .. "\\" .. string.format("%s %d", months[date.month], date.year)
+			"\\config\\Checker Captures\\Logs\\Galaxy " ..
+			getServer() .. "\\" .. string.format("%s %d", months[date.month], date.year)
 	if not doesDirectoryExist(directory) then createDirectory(directory) end
 	local logPath = directory ..
-		"\\" .. string.format("%s.%s.%s", addZero(date.day), addZero(date.month), date.year) .. ".txt"
+			"\\" .. string.format("%s.%s.%s", addZero(date.day), addZero(date.month), date.year) .. ".txt"
 	local f = io.open(logPath, "a")
 	if f == nil then
 		f = io.open(logPath, "w")
