@@ -1,7 +1,7 @@
 script_name('Checker Captures')
 script_description('Скрипт показывает активные захваты на серверах GalaxY RPG')
 script_author('Kotovasya')
-script_version(6.0)
+script_version(6.1)
 script_dependencies('ImGui', 'Font Awesome 5')
 
 require "lib.moonloader"
@@ -1239,7 +1239,7 @@ function getServer()
 	local iport = ip .. ":" .. tostring(port)
 
 	local TNames = {
-		["176.32.39.200:7777"] = 1,
+		["80.66.71.70:7777"] = 1,
 		["176.32.39.199:7777"] = 2,
 		["176.32.39.198:7777"] = 3
 	}
@@ -1601,7 +1601,7 @@ end
 
 function isGalaxy()
 	local patterns = {
-		["176.32.39.200:7777"] = 1,
+		["80.66.71.70:7777"] = 1,
 		["176.32.39.199:7777"] = 2,
 		["176.32.39.198:7777"] = 3
 	}
